@@ -5,7 +5,7 @@
  * given by Auth0.
  *
  */
-class Auth0User implements \Illuminate\Auth\UserInterface {
+class Auth0User implements \Illuminate\Contracts\Auth\Authenticatable {
 
     private $userInfo;
     function __construct ($userInfo) {
