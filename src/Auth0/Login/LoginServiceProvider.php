@@ -18,7 +18,7 @@ class LoginServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $this->package('auth0/login','auth0');
+        // $this->package('auth0/login','auth0');
         \Auth::extend('auth0', function($app) {
             $provider =  new Auth0UserProvider();
 
