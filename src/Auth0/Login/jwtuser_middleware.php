@@ -1,7 +1,7 @@
 <?php namespace Auth0\Login\Middleware;
 
-use Illuminate\Foundation\Application;
-use Illuminate\Contracts\Routing\Middleware;
+use \Illuminate\Foundation\Application;
+use \Illuminate\Contracts\Routing\Middleware;
 
 /**
  * Service that provides access to the Auth0 SDK.
