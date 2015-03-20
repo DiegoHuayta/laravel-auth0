@@ -2,12 +2,43 @@
 
 use Config;
 use Auth0SDK\Auth0;
+use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Routing\Middleware;
 
 /**
  * Service that provides access to the Auth0 SDK.
  */
-class Auth0Service {
+class Auth0Service implements Middleware{
     private $auth0;
+
+     /**
+     * The Laravel Application
+     *
+     * @var Application
+     */
+    protected $app;
+    /**
+     * Create a new middleware instance.
+     *
+     * @param  Application  $app
+     * @return void
+     */
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        return $next($request);
+        
+    }
 
     /**
      * Creates an instance of the Auth0 SDK using
@@ -16,7 +47,8 @@ class Auth0Service {
      */
     private function getSDK() {
         if (is_null($this->auth0)) {
-            $auth0Config = Config::get('auth0::config');
+            // $auth0Config = Config::get('auth0::config');
+            $auth0Config = $this->app['config']->get('auth0', []);
             $auth0Config['store'] = new LaravelSessionStore();
             $this->auth0 = new Auth0($auth0Config);
         }
@@ -62,14 +94,16 @@ class Auth0Service {
     private $apiuser;
     public function decodeJWT($encUser) {
 
-        $secret = Config::get('auth0::api.secret');
+        // $secret = Config::get('auth0::api.secret');
+        $secret = $this->app['config']->get('auth0_api.secret', []);
         $canDecode = false;
 
         try {
             // Decode the user
             $this->apiuser = \JWT::decode($encUser, base64_decode(strtr($secret, '-_', '+/')) );
             // validate that this JWT was made for us
-            if ($this->apiuser->aud == Config::get('auth0::api.audience')) {
+            // if ($this->apiuser->aud == Config::get('auth0::api.audience')) {
+            if ($this->apiuser->aud == $this->app['config']->get('auth0_api.audience', []) ) {
                 $canDecode = true;
             }
         } catch(\UnexpectedValueException $e) {
