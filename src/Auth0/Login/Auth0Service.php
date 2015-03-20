@@ -2,13 +2,10 @@
 
 use Config;
 use Auth0SDK\Auth0;
-use \Illuminate\Foundation\Application;
-use \Illuminate\Contracts\Routing\Middleware;
-
 /**
  * Service that provides access to the Auth0 SDK.
  */
-class Auth0Service implements Middleware{
+class Auth0Service {
     private $auth0;
 
      /**
@@ -23,22 +20,11 @@ class Auth0Service implements Middleware{
      * @param  Application  $app
      * @return void
      */
-    public function __construct(Application $app)
+    public function __construct(\Illuminate\Foundation\Application $app)
     {
         $this->app = $app;
     }
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
-    {
-        return $next($request);
-        
-    }
+   
 
     /**
      * Creates an instance of the Auth0 SDK using
