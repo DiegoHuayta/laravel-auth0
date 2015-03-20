@@ -20,8 +20,8 @@ class LoginServiceProvider extends ServiceProvider {
     {
         // $this->package('auth0/login','auth0');
         $this->publishes([
-            '/../config/config.php' => config_path('auth0.php'),
-            '/../config/api.php' => config_path('auth0_api.php'),
+            realpath('/../config/config.php') => config_path('auth0.php'),
+            realpath('/../config/api.php') => config_path('auth0_api.php'),
         ]);
         \Auth::extend('auth0', function($app) {
             $provider =  new Auth0UserProvider();
