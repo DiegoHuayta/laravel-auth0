@@ -35,13 +35,13 @@ class Auth0UserProvider
     /**
      * Required method by the UserProviderInterface, we don't implement it
      */
-    public function updateRememberToken(\Illuminate\Auth\UserInterface $user, $token) {
+    public function updateRememberToken(\Illuminate\Contracts\Auth\Authenticatable $user, $token) {
     }
 
     /**
      * Required method by the UserProviderInterface, we don't implement it
      */
-    public function validateCredentials(\Illuminate\Auth\UserInterface $user, array $credentials) {
+    public function validateCredentials(\Illuminate\Contracts\Auth\Authenticatable $user, array $credentials) {
         return false;
      }
 }
