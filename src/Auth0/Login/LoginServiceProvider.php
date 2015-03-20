@@ -37,6 +37,10 @@ class LoginServiceProvider extends ServiceProvider {
      */
     public function register()
     {
+        $configPath = __DIR__ . '/../../config/config.php';
+        $configPathApi = __DIR__ . '/../../config/api.php';
+        $this->mergeConfigFrom($configPath, 'auth0');
+        $this->mergeConfigFrom($configPathApi, 'auth0');
         // Bind the auth0 name to a singleton instance of the Auth0 Service
         $this->app->singleton("auth0", function() {
             return new Auth0Service();
