@@ -6,7 +6,7 @@ use Auth0SDK\Auth0;
 /**
  * Service that provides access to the Auth0 SDK.
  */
-class Auth0Service {
+class Auth0Service  extends ServiceProvider{
     private $auth0;
 
     /**
@@ -16,7 +16,8 @@ class Auth0Service {
      */
     private function getSDK() {
         if (is_null($this->auth0)) {
-            $auth0Config = Config::get('auth0::config');
+            // $auth0Config = Config::get('auth0::config');
+            $auth0Config = $this->app['config']->get('auth0', []);
             $auth0Config['store'] = new LaravelSessionStore();
             $this->auth0 = new Auth0($auth0Config);
         }
@@ -61,15 +62,15 @@ class Auth0Service {
 
     private $apiuser;
     public function decodeJWT($encUser) {
-
-        $secret = Config::get('auth0::api.secret');
+        $secret = $this->app['config']->get('api.secret', []);
         $canDecode = false;
 
         try {
             // Decode the user
             $this->apiuser = \JWT::decode($encUser, base64_decode(strtr($secret, '-_', '+/')) );
             // validate that this JWT was made for us
-            if ($this->apiuser->aud == Config::get('auth0::api.audience')) {
+            
+            if ($this->apiuser->aud == $this->app['config']->get('api.audience', []) ) {
                 $canDecode = true;
             }
         } catch(\UnexpectedValueException $e) {
