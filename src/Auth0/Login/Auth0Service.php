@@ -8,23 +8,6 @@ use Auth0SDK\Auth0;
 class Auth0Service {
     private $auth0;
 
-     /**
-     * The Laravel Application
-     *
-     * @var Application
-     */
-    protected $app;
-    /**
-     * Create a new middleware instance.
-     *
-     * @param  Application  $app
-     * @return void
-     */
-    public function __construct(\Illuminate\Foundation\Application $app)
-    {
-        $this->app = $app;
-    }
-   
 
     /**
      * Creates an instance of the Auth0 SDK using
@@ -33,8 +16,8 @@ class Auth0Service {
      */
     private function getSDK() {
         if (is_null($this->auth0)) {
-            // $auth0Config = Config::get('auth0::config');
-            $auth0Config = $this->app['config']->get('auth0', []);
+            $auth0Config = Config::get('auth0::config');
+            // $auth0Config = $this->app['config']->get('auth0', []);
             $auth0Config['store'] = new LaravelSessionStore();
             $this->auth0 = new Auth0($auth0Config);
         }
@@ -80,16 +63,16 @@ class Auth0Service {
     private $apiuser;
     public function decodeJWT($encUser) {
 
-        // $secret = Config::get('auth0::api.secret');
-        $secret = $this->app['config']->get('auth0_api.secret', []);
+        $secret = Config::get('auth0::api.secret');
+        // $secret = $this->app['config']->get('auth0_api.secret', []);
         $canDecode = false;
 
         try {
             // Decode the user
             $this->apiuser = \JWT::decode($encUser, base64_decode(strtr($secret, '-_', '+/')) );
             // validate that this JWT was made for us
-            // if ($this->apiuser->aud == Config::get('auth0::api.audience')) {
-            if ($this->apiuser->aud == $this->app['config']->get('auth0_api.audience', []) ) {
+            if ($this->apiuser->aud == Config::get('auth0::api.audience')) {
+            // if ($this->apiuser->aud == $this->app['config']->get('auth0_api.audience', []) ) {
                 $canDecode = true;
             }
         } catch(\UnexpectedValueException $e) {

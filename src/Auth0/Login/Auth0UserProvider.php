@@ -1,6 +1,6 @@
 <?php namespace Auth0\Login;
 
-use Illuminate\Contracts\Auth\UserProvider;
+use \Illuminate\Contracts\Auth\UserProvider;
 /**
  * Service that provides an Auth0\LaravelAuth0\Auth0User stored in the session. This User provider
  * should be used when you don't want to persist the entity.

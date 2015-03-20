@@ -1,6 +1,6 @@
 <?php namespace Auth0\Login;
 
-use Illuminate\Support\ServiceProvider;
+use \Illuminate\Support\ServiceProvider;
 
 class LoginServiceProvider extends ServiceProvider {
 
