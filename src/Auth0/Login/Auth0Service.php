@@ -6,7 +6,7 @@ use Auth0SDK\Auth0;
 /**
  * Service that provides access to the Auth0 SDK.
  */
-class Auth0Service  extends \Illuminate\Contracts\Foundation\Application{
+class Auth0Service  implements \Illuminate\Contracts\Foundation\Application{
     private $auth0;
 
     /**
