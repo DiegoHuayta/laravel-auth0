@@ -19,6 +19,10 @@ class LoginServiceProvider extends ServiceProvider {
     public function boot()
     {
         // $this->package('auth0/login','auth0');
+        $this->publishes([
+            __DIR__.'/../config/config.php' => config_path('auth0.php'),
+            __DIR__.'/../config/api.php' => config_path('auth0_api.php'),
+        ]);
         \Auth::extend('auth0', function($app) {
             $provider =  new Auth0UserProvider();
 
