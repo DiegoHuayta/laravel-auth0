@@ -2,7 +2,7 @@
 
 use Config;
 use Auth0SDK\Auth0;
-
+use Illuminate\Support\ServiceProvider;
 /**
  * Service that provides access to the Auth0 SDK.
  */
