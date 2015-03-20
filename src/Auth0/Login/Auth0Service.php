@@ -2,11 +2,11 @@
 
 use Config;
 use Auth0SDK\Auth0;
-use Illuminate\Support\ServiceProvider;
+
 /**
  * Service that provides access to the Auth0 SDK.
  */
-class Auth0Service  extends ServiceProvider{
+class Auth0Service  extends Illuminate\Contracts\Foundation\Application{
     private $auth0;
 
     /**
@@ -17,7 +17,7 @@ class Auth0Service  extends ServiceProvider{
     private function getSDK() {
         if (is_null($this->auth0)) {
             // $auth0Config = Config::get('auth0::config');
-            $auth0Config = $this->app['config']->get('auth0', []);
+            $auth0Config = app()->config()->get('auth0', []);
             $auth0Config['store'] = new LaravelSessionStore();
             $this->auth0 = new Auth0($auth0Config);
         }
@@ -62,7 +62,7 @@ class Auth0Service  extends ServiceProvider{
 
     private $apiuser;
     public function decodeJWT($encUser) {
-        $secret = $this->app['config']->get('api.secret', []);
+        $secret = app()->config()->get('api.secret', []);
         $canDecode = false;
 
         try {
@@ -70,7 +70,7 @@ class Auth0Service  extends ServiceProvider{
             $this->apiuser = \JWT::decode($encUser, base64_decode(strtr($secret, '-_', '+/')) );
             // validate that this JWT was made for us
             
-            if ($this->apiuser->aud == $this->app['config']->get('api.audience', []) ) {
+            if ($this->apiuser->aud == app()->config()->get('api.audience', []) ) {
                 $canDecode = true;
             }
         } catch(\UnexpectedValueException $e) {
